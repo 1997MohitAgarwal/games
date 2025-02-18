@@ -1,101 +1,190 @@
-import Image from "next/image";
+"use client";
+import { useState, useEffect } from "react";
+import {
+  FaHeart,
+  FaUser,
+  FaWallet,
+  FaGamepad,
+  FaHome,
+  FaStar,
+  FaGift,
+  FaCog,
+  FaFire,
+  FaRegStar,
+  FaCoins,
+  FaTools,
+  FaGift as FaBonus,
+  FaDice,
+  FaFish,
+  FaTableTennis,
+  FaChessKing,
+  FaCrown,
+} from "react-icons/fa";
+import { Button } from "@/components/ui/button";
 
-export default function Home() {
+interface Game {
+  id: number;
+  category: string;
+  name: string;
+  image: string;
+}
+
+const dummyCategories = [
+  { name: "Slots", icon: <FaDice /> },
+  { name: "JILI", icon: <FaRegStar /> },
+  { name: "Bingo", icon: <FaTableTennis /> },
+  { name: "Fish", icon: <FaFish /> },
+  { name: "EVO", icon: <FaChessKing /> },
+  { name: "WM", icon: <FaGift /> },
+];
+
+const dummyGames: Game[] = [
+  ...dummyCategories.flatMap(({ name }, index) =>
+    Array.from({ length: 9 }, (_, i) => ({
+      id: index * 10 + i,
+      category: name,
+      name: `${name} Game ${i + 1}`,
+      image: "https://via.placeholder.com/150",
+    }))
+  ),
+];
+
+const carouselImages = [
+  "https://media.istockphoto.com/id/854509336/photo/dark-purple-casino-games.webp?a=1&b=1&s=612x612&w=0&k=20&c=kuEm1u5uUrgIGA8dqFUqlSCzxvTc7YYCg5rCAbfgFcA=",
+  "https://plus.unsplash.com/premium_photo-1698525808858-d5ef5f190e45?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1615680022647-99c397cbcaea?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+];
+
+export default function GameUI() {
+  const [selectedCategory, setSelectedCategory] = useState<string>("Slots");
+  const [games, setGames] = useState<Game[]>([]);
+  const [currentCarouselIndex, setCurrentCarouselIndex] = useState<number>(0);
+
+  useEffect(() => {
+    setGames(dummyGames.filter((game) => game.category === selectedCategory));
+  }, [selectedCategory]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentCarouselIndex(
+        (prevIndex) => (prevIndex + 1) % carouselImages.length
+      );
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="bg-black text-white min-h-screen flex flex-col">
+      {/* Top Navigation */}
+      <div className="bg-gray-800 p-3 flex justify-between items-center">
+        <div className="flex">
+        <FaCrown className="mr-1 text-3xl"/>
+        <h1 className="text-xl font-bold mt-1">INPH</h1>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <div>
+          <Button className="bg-white text-yellow-600 px-3 py-1 rounded">
+            Login
+          </Button>
+          <Button className="bg-red-500 text-white px-3 py-1 rounded ml-2">
+            Register
+          </Button>
+        </div>
+      </div>
+
+      <div
+        className="relative text-center font-bold text-lg"
+        style={{ height: "200px" }}
+      >
+        <img
+          src={carouselImages[currentCarouselIndex]}
+          alt="Realtime Cashback"
+          className="w-full h-full object-cover object-center rounded-lg"
+        />
+      </div>
+
+      {/* News Ticker */}
+      <div className="overflow-hidden bg-gray-800 p-4 text-white text-lg">
+        <div className="whitespace-nowrap animate-marquee text-sm">
+          <div className="inline-flex items-center mr-40">
+            <FaCoins color="yellow" className="mr-2" />
+            <span>Huge cashback offers, check them out now!</span>
+          </div>
+          <div className="inline-flex items-center mr-40">
+            <FaFire color="orange" className="mr-2" />
+            <span>Win big with our Slots and Bingo games!</span>
+          </div>
+          <div className="inline-flex items-center mr-40">
+            <FaGift color="yellow" className="mr-2" />
+            <span>Exclusive VIP bonuses for our top players!</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Top Menu Bar */}
+      <div className="flex gap-2 p-2 bg-gray-700 justify-around text-sm">
+        {[
+          { name: "Hot Games", icon: <FaFire />, color: "text-orange-600" },
+          { name: "My Favorite", icon: <FaStar />, color: "text-yellow-800" },
+          { name: "Cashback", icon: <FaCoins />, color: "text-yellow-600" },
+          { name: "Services", icon: <FaTools />, color: "text-yellow-700" },
+          { name: "Bonus", icon: <FaBonus />, color: "text-yellow-600" },
+        ].map((item) => (
+          <Button
+            key={item.name}
+            className={`px-3 py-1 ${item.color} rounded flex items-center gap-2`}
+          >
+            {item.icon}
+          </Button>
+        ))}
+      </div>
+
+      <div className="flex flex-1">
+        {/* Sidebar Categories */}
+        <div className="w-1/5 bg-gray-800 rounded-xl mt-4 p-4">
+          {dummyCategories.map((cat) => (
+            <div
+              key={cat.name}
+              className={`flex flex-col items-center mb-3 justify-center p-3 rounded-full lg:rounded-sm cursor-pointer ${
+                selectedCategory === cat.name ? "bg-yellow-500" : "bg-gray-700"
+              }`}
+              onClick={() => setSelectedCategory(cat.name)}
+            >
+              {cat.icon}
+              <p className="text-xs mt-1">{cat.name}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Games Grid */}
+        <div className="w-4/5 grid grid-cols-3 gap-2 p-4">
+          {games.map((game) => (
+            <div
+              key={game.id}
+              className="relative cursor-pointer bg-gray-700 p-2 rounded-md transition-transform transform hover:scale-95 hover:shadow-lg hover:bg-gray-600"
+            >
+              <img
+                src="https://media.istockphoto.com/id/693041112/photo/online-casino-concept-laptop-roulette-slot-machine-chips-and-cards.jpg?s=612x612&w=0&k=20&c=vYa8kEnpczH2309Jy7hNshl4I1UOgIq5a-f4LvblCzg="
+                alt={game.name}
+                className="w-full object-contain rounded"
+              />
+              <h2 className="text-xs text-center mt-2">{game.name}</h2>
+              <FaHeart className="absolute top-8 right-8 text-2xl text-yellow-400" />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Bottom Navigation */}
+      <div className="bg-yellow-500 p-4 mt-4 flex justify-around text-white text-2xl space-x-4 cursor-pointer">
+        <FaHome />
+        <FaGamepad />
+        <FaWallet />
+        <FaStar />
+        <FaGift />
+        <FaUser />
+        <FaCog />
+      </div>
     </div>
   );
 }
