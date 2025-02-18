@@ -3,8 +3,6 @@ import { useState, useEffect } from "react";
 import {
   FaHeart,
   FaUser,
-  FaWallet,
-  FaGamepad,
   FaHome,
   FaStar,
   FaGift,
