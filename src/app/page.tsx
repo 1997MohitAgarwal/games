@@ -20,6 +20,7 @@ import {
   FaChessKing,
   FaCrown,
 } from "react-icons/fa";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
 interface Game {
@@ -96,7 +97,7 @@ export default function GameUI() {
         className="relative text-center font-bold text-lg"
         style={{ height: "200px" }}
       >
-        <img
+        <Image
           src={carouselImages[currentCarouselIndex]}
           alt="Realtime Cashback"
           className="w-full h-full object-cover object-center rounded-lg"
@@ -157,13 +158,13 @@ export default function GameUI() {
         </div>
 
         {/* Games Grid */}
-        <div className="w-4/5 grid grid-cols-3 gap-2 p-4">
+        <div className="w-4/5 grid grid-cols-3 gap-4 p-4">
           {games.map((game) => (
             <div
               key={game.id}
               className="relative cursor-pointer bg-gray-700 p-2 rounded-md transition-transform transform hover:scale-95 hover:shadow-lg hover:bg-gray-600"
             >
-              <img
+              <Image
                 src="https://media.istockphoto.com/id/693041112/photo/online-casino-concept-laptop-roulette-slot-machine-chips-and-cards.jpg?s=612x612&w=0&k=20&c=vYa8kEnpczH2309Jy7hNshl4I1UOgIq5a-f4LvblCzg="
                 alt={game.name}
                 className="w-full object-contain rounded"
