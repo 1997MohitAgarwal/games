@@ -94,8 +94,9 @@ export default function GameUI() {
         <Image
           src={carouselImages[currentCarouselIndex]}
           alt="Realtime Cashback"
-          width={100}
-          height={100}
+          width={1920}
+          height={800}
+          quality={90}
           className="w-full h-full object-cover object-center rounded-lg"
         />
       </div>
