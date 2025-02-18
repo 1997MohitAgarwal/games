@@ -27,7 +27,6 @@ interface Game {
   id: number;
   category: string;
   name: string;
-  image: string;
 }
 
 const dummyCategories = [
@@ -41,11 +40,10 @@ const dummyCategories = [
 
 const dummyGames: Game[] = [
   ...dummyCategories.flatMap(({ name }, index) =>
-    Array.from({ length: 9 }, (_, i) => ({
-      id: index * 10 + i,
+    Array.from({ length: 8 }, (_, i) => ({
+      id: index * 9 + i,
       category: name,
       name: `${name} Game ${i + 1}`,
-      image: "https://via.placeholder.com/150",
     }))
   ),
 ];
@@ -80,42 +78,42 @@ export default function GameUI() {
       {/* Top Navigation */}
       <div className="bg-gray-800 p-3 flex justify-between items-center">
         <div className="flex">
-        <FaCrown className="mr-1 text-3xl"/>
-        <h1 className="text-xl font-bold mt-1">INPH</h1>
+          <FaCrown className="mr-1 text-3xl" />
+          <h1 className="text-xl font-bold mt-1">INPH</h1>
         </div>
         <div>
-          <Button className="bg-white text-yellow-600 px-3 py-1 rounded">
+          <Button className="bg-white text-yellow-600 px-3 py-1 rounded" aria-label="Login">
             Login
           </Button>
-          <Button className="bg-red-500 text-white px-3 py-1 rounded ml-2">
+          <Button className="bg-red-500 text-white px-3 py-1 rounded ml-2" aria-label="Register">
             Register
           </Button>
         </div>
       </div>
 
-      <div
-        className="relative text-center font-bold text-lg"
-        style={{ height: "200px" }}
-      >
+      {/* Carousel */}
+      <div className="relative text-center font-bold text-lg" style={{ height: "200px" }}>
         <Image
           src={carouselImages[currentCarouselIndex]}
           alt="Realtime Cashback"
+          width={100}
+          height={100}
           className="w-full h-full object-cover object-center rounded-lg"
         />
       </div>
 
       {/* News Ticker */}
       <div className="overflow-hidden bg-gray-800 p-4 text-white text-lg">
-        <div className="whitespace-nowrap animate-marquee text-sm">
-          <div className="inline-flex items-center mr-40">
+        <div className="whitespace-nowrap animate-marquee text-lg">
+          <div className="inline-flex items-center mr-24">
             <FaCoins color="yellow" className="mr-2" />
             <span>Huge cashback offers, check them out now!</span>
           </div>
-          <div className="inline-flex items-center mr-40">
+          <div className="inline-flex items-center mr-24">
             <FaFire color="orange" className="mr-2" />
             <span>Win big with our Slots and Bingo games!</span>
           </div>
-          <div className="inline-flex items-center mr-40">
+          <div className="inline-flex items-center mr-24">
             <FaGift color="yellow" className="mr-2" />
             <span>Exclusive VIP bonuses for our top players!</span>
           </div>
@@ -124,16 +122,31 @@ export default function GameUI() {
 
       {/* Top Menu Bar */}
       <div className="flex gap-2 p-2 bg-gray-700 justify-around text-sm">
-        {[
-          { name: "Hot Games", icon: <FaFire />, color: "text-orange-600" },
-          { name: "My Favorite", icon: <FaStar />, color: "text-yellow-800" },
-          { name: "Cashback", icon: <FaCoins />, color: "text-yellow-600" },
-          { name: "Services", icon: <FaTools />, color: "text-yellow-700" },
-          { name: "Bonus", icon: <FaBonus />, color: "text-yellow-600" },
-        ].map((item) => (
+        {[{
+          name: "Hot Games",
+          icon: <FaFire />,
+          color: "text-orange-600"
+        }, {
+          name: "My Favorite",
+          icon: <FaStar />,
+          color: "text-yellow-800"
+        }, {
+          name: "Cashback",
+          icon: <FaCoins />,
+          color: "text-yellow-600"
+        }, {
+          name: "Services",
+          icon: <FaTools />,
+          color: "text-yellow-700"
+        }, {
+          name: "Bonus",
+          icon: <FaBonus />,
+          color: "text-yellow-600"
+        }].map((item) => (
           <Button
             key={item.name}
             className={`px-3 py-1 ${item.color} rounded flex items-center gap-2`}
+            aria-label={`Navigate to ${item.name}`}
           >
             {item.icon}
           </Button>
@@ -142,14 +155,13 @@ export default function GameUI() {
 
       <div className="flex flex-1">
         {/* Sidebar Categories */}
-        <div className="w-1/5 bg-gray-800 rounded-xl mt-4 p-4">
+        <div className="w-1/5 bg-gray-800 rounded-xl mt-4 pt-4 px-4 pb-0">
           {dummyCategories.map((cat) => (
             <div
               key={cat.name}
-              className={`flex flex-col items-center mb-3 justify-center p-3 rounded-full lg:rounded-sm cursor-pointer ${
-                selectedCategory === cat.name ? "bg-yellow-500" : "bg-gray-700"
-              }`}
+              className={`flex flex-col items-center mb-3 justify-center p-3 rounded-full lg:rounded-sm cursor-pointer ${selectedCategory === cat.name ? "bg-yellow-500" : "bg-gray-700"}`}
               onClick={() => setSelectedCategory(cat.name)}
+              aria-label={`Select ${cat.name} category`}
             >
               {cat.icon}
               <p className="text-xs mt-1">{cat.name}</p>
@@ -158,7 +170,7 @@ export default function GameUI() {
         </div>
 
         {/* Games Grid */}
-        <div className="w-4/5 grid grid-cols-3 gap-4 p-4">
+        <div className="w-4/5 grid grid-cols-2 lg:grid-cols-4 gap-4 p-4">
           {games.map((game) => (
             <div
               key={game.id}
@@ -168,9 +180,11 @@ export default function GameUI() {
                 src="https://media.istockphoto.com/id/693041112/photo/online-casino-concept-laptop-roulette-slot-machine-chips-and-cards.jpg?s=612x612&w=0&k=20&c=vYa8kEnpczH2309Jy7hNshl4I1UOgIq5a-f4LvblCzg="
                 alt={game.name}
                 className="w-full object-contain rounded"
+                width={100}
+                height={100}
               />
               <h2 className="text-xs text-center mt-2">{game.name}</h2>
-              <FaHeart className="absolute top-8 right-8 text-2xl text-yellow-400" />
+              <FaHeart className="absolute top-3 right-3 text-md text-red-400" />
             </div>
           ))}
         </div>
@@ -178,13 +192,11 @@ export default function GameUI() {
 
       {/* Bottom Navigation */}
       <div className="bg-yellow-500 p-4 mt-4 flex justify-around text-white text-2xl space-x-4 cursor-pointer">
-        <FaHome />
-        <FaGamepad />
-        <FaWallet />
-        <FaStar />
-        <FaGift />
-        <FaUser />
-        <FaCog />
+        <FaHome aria-label="Home" />
+        <FaStar aria-label="Favorites" />
+        <FaGift aria-label="Bonus" />
+        <FaUser aria-label="Profile" />
+        <FaCog aria-label="Settings" />
       </div>
     </div>
   );
